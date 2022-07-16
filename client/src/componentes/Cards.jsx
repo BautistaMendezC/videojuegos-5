@@ -1,15 +1,25 @@
 import React from "react";
+import styles from './Cards.module.css' ;
 
-export default function Card ({name,released,rating,platforms,img,genres}){
 
+export default function Card ({name,released,rating,platforms,img,genres, id}){
+    console.log(name)
     return(
-        <div>
-            <h4>Juego : {name}</h4>
-            <h4>se lanzo :{released}</h4>
-            <h4>ptje :{rating}</h4>
-            <h4>plataformas disponibles : {platforms}</h4>
-            <img src={img} alt="No hay foto" width="100px" height="100px"/>
-            <h4>generos :{genres}</h4>
-        </div>
+            <div className = {styles.row}>
+            <div className = {styles.column}>
+            <div className = {styles.card}>
+            <div className = {styles.container}>
+                    <div className = {styles.sub}>
+                    <h1> {name}</h1>
+                    <h2>{genres}</h2>
+                    <h3>{rating}</h3>
+                    <img src={img} alt="No hay foto" width="400px" height="250px"/>
+                    <h3>{released}</h3>
+                    <h3>{platforms}</h3>
+                    </div>
+            </div>
+            </div>
+            </div>
+            </div>
     )
 }
