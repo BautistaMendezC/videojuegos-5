@@ -9,11 +9,11 @@ function validate (input){
     if (!input.name){
         errors.name = "el nombre es un campo necesario";
     }
-    if (input.rating > 5 || input.rating < 0){
+    if (input.rating > 5 || input.rating < 0 ){
         errors.rating = "el videojuego solo se puede rankear del 1 al 5"
     }
-    if (input.description.lenght < 5){
-        errors.description = "la descripcion debe tener al menos 5 caracteres"
+    if (!input.description){
+        errors.description = "la descripcion es un campo obligatorio"
  } return errors
 }
 
@@ -33,7 +33,7 @@ export default function VideogameCreate () {
         rating :"",
         img:"",
         genres :[],
-        platforms:[]
+        platforms:[],
     })
 
     useEffect(()=>{
@@ -157,16 +157,19 @@ export default function VideogameCreate () {
                 </div>
                 <label >Genre </label>
                 <select onChange={(e)=> handleSelect(e)}>
-                  {allGenres?.map((g) => (<option value={g.name}>{g.name}</option>))}
+                  {allGenres?.map((g) => (<option key={g.id}value={g.name}>{g.name}</option>))}
               </select> 
               <div/> 
                <label>Platform </label>
               <select onChange={(e)=> handleSelect2(e)}>
-                   {platforms?.map((platforms) => (<option value={platforms.name}>{platforms.name}</option>))}
+                   {platforms?.map((platforms) => (<option key={platforms.id} value={platforms.name}>{platforms.name}</option>))}
                </select> 
                <div/>
-                <button type="Submit" onClick={(e)=>handleSubmit(e)}> Submit </button>
-
+                    <div>
+                        { !errors.name && !errors.rating && !errors.description &&(
+                    <button type="Submit" onClick={(e)=>handleSubmit(e)}> Submit </button>
+                        )}
+                    </div>
                 {input.platforms.map(el=>
                     <div>
                     <p>{el}</p>

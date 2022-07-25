@@ -18,18 +18,30 @@ function rootReducer(state = inicialState, action){
         case "GET_NAME_GAMES":
             return{
                 ...state,
-                videogames: action.payload? action.payload : action.payload
+                videogames: action.payload
             }
         case "GET_GAME_ID":
             return{
                 ...state,
                 detail : action.payload,
             }
+            case "CLEAR":
+                return{
+                    ...state,
+                    detail : {},
+                }
         case "GET_GENRES":
             return{
                 ...state,
                 genres: action.payload,
             } 
+        case "FILTER_M":
+            const allVideogames1 = state.allVideogames
+            const RatingAlto = allVideogames1.filter(e=>e.rating > 4)
+            return{
+                ...state,
+                videogames:  RatingAlto
+            }
 
         case "POST_VIDEOGAME":
             return{

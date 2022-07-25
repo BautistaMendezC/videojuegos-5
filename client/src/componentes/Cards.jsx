@@ -2,10 +2,10 @@ import React from "react";
 import styles from './Cards.module.css' ;
 
 
-export default function Card ({name,released,rating,platforms,img,genres, id}){
+export default function Card ({name,released,rating,platforms,img,genres}){
     console.log(name)
     return(
-            <div className = {styles.row}>
+        <div className = {styles.row}>
             <div className = {styles.column}>
             <div className = {styles.card}>
             <div className = {styles.container}>
@@ -20,6 +20,6 @@ export default function Card ({name,released,rating,platforms,img,genres, id}){
             </div>
             </div>
             </div>
-            </div>
+          </div>
     )
 }

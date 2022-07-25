@@ -3,6 +3,7 @@ import axios from "axios";
 
 //DISPATCH, EXPORTA SOLO LAS ACCIONES AL REDUCER SIN TENER QUE IMPORTARLAS
 export function getVideogames (){
+    
     return async function(dispatch){
         var json = await axios.get("http://localhost:3001/Videogames");
      return dispatch({
@@ -49,6 +50,11 @@ export function filterGamesByGenre(payload){
         payload : payload
     })
 }
+export function filterM(){
+    return({
+        type:"FILTER_M"
+    })
+}
 
 export function filterGamesByCreated(payload){
     return({
@@ -83,3 +89,8 @@ export function getGamesById(id){
       console.log(error)
    }
   }
+  export function Clear(){
+    return({
+        type: "CLEAR",
+    })
+}

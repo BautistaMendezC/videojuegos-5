@@ -1,5 +1,5 @@
 body {
-  /* background-image: url("./images/inicio2.jpeg"); */
+  background-image: url("./imagenes/foto2.jpg"); 
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -17,7 +17,7 @@ font-size: 23px;
 h1 {
   
   font-weight: bold;
-  color: #ff0000;
+  color: #ffffff;
   text-align: center;
   margin-top: 20px;
   margin-bottom: 5px;

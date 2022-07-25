@@ -2,7 +2,7 @@ import React from "react";
 import Card from "./Cards";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import {getVideogames , filterGamesByGenre, filterGamesByCreated, filterAsc, filterRank} from "../actions/index"
+import {getVideogames , filterGamesByGenre, filterGamesByCreated, filterAsc, filterRank, getGenres, filterM} from "../actions/index"
 import {Link} from "react-router-dom"
 import Paginado from "./Paginado";
 import SearchBar from "./SearchBar";
@@ -20,6 +20,13 @@ const indexOfLastVideogames = currentPage * videogamesPerPage;
 const indexOfFirstVideogames = indexOfLastVideogames - videogamesPerPage;
 const currentVideogames = AllVideogames?.slice(indexOfFirstVideogames, indexOfLastVideogames)
 
+const genres = useSelector((state)=> state.genres)
+console.log(genres)
+
+useEffect(() => {
+    Dispatch(getGenres());
+    },[Dispatch]);
+
 
 const paginado = (pageNumber) => {
     setCurrentPage(pageNumber)
@@ -36,7 +43,7 @@ function handleClick(e){
 function handleFilterGenre(e){
     e.preventDefault();
     console.log(e.target.value)
-    Dispatch(filterGamesByGenre(e.target.value))
+    Dispatch(filterGamesByGenre(e.target.value));
 }
 
 function handleFilterCreated(e){
@@ -57,13 +64,17 @@ function handleSort2(e){
     setCurrentPage(1);
     setOrder(`ordenado ${e.target.value}`)
 }
+function handlemayores(e){
+    e.preventDefault();
+    Dispatch(filterM())
+}
 
 
     return(
         <div>
-            <Link  className= {styles.btn} to="/videogames"> Crear personaje</Link>
             <SearchBar/>
             <h1 className= {styles.letra} >Videojuegos</h1>
+            <button onClick={e=>handlemayores(e)}>mayores a 4</button>
             <button  className= {styles.btn} onClick={e => handleClick(e)}>
                  volver a cargar personajes
             </button>
@@ -81,23 +92,12 @@ function handleSort2(e){
                 <option value="Rank">peores Rankeados</option>
             </select>
             <select className= {styles.btn} onChange={e=>handleFilterGenre(e)}>
-                <option value="Action">accion</option>
-                <option value="Adventure">aventura</option>
-                <option value="RPG">RPG</option>
-                <option value="Puzzle">puzzle</option>
-                <option value="Shooter">tiros</option>
-                <option value="Platformer">platformer</option>
-                <option value="Indie">indie</option>
-                <option value="Massively Multiplayer">multijugador</option>
-                <option value="Sports">deportes</option>
-                <option value="Racing">carreras</option>
-                <option value="Simulation">simulacion</option>
-                <option value="Arcade">arcade</option>
-                <option value="Fighting">pelea</option>
-                <option value="Strategy">estrategia</option>
-                <option value="Casual">casual</option>
+            {genres?.map(g=>{
+                return(
+                <option key={g.id} value={g.name}>{g.name}</option>
+                )})}
             </select>
-
+            <Link  className= {styles.btn} to="/videogames"> Crear personaje</Link>
             <div>
             <Paginado
                     videogamesPerPage ={videogamesPerPage}
@@ -110,7 +110,8 @@ function handleSort2(e){
             { 
            currentVideogames?.map((e)=>{
             return(
-                <div className = {styles.container}>
+               
+                 <div className = {styles.container}>
                 <Link className= {styles.sub} to={"/home/" + e.id}>
             <Card key={e.id} name= {e.name} released= {e.released} rating= {e.rating} platforms= {e.platforms} img= {e.img} genres= {e.genres}/>
             </Link>

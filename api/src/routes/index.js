@@ -20,7 +20,6 @@ const getApiInfo = async () => {
         return {
             id:el.id,
             name:el.name,
-            description:el.description,
             released:el.released,
             rating:el.rating,
             platforms:el.platforms.map(el=>el.platform.name + " / "),
@@ -63,6 +62,7 @@ router.get("/Videogames", async (req,res)=>{
     } // SI NO PEDIMOS NADA POR QUERY, TRAEME TODAS LAS RECETAS
 })
 
+
 router.get("/Genres", async (req,res)=>{
     const generoApi = await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`)
     generoApi.data.results.forEach(async (element) => {
@@ -77,6 +77,7 @@ router.get("/Genres", async (req,res)=>{
 })
 
 router.post("/Videogame", async (req,res)=> {
+   
     let{                              // LE PASO LOS DATOS QUE QUIERO MANDAR POR BODY
             name,
             description,
@@ -87,6 +88,8 @@ router.post("/Videogame", async (req,res)=> {
             genres,
             createdInDb
         } = req.body
+
+        if(!name || platforms.length == 0 || genres.length ==0){return res.status(404).send("faltan campos requeridos")}
     let videogamesCreated = await Videogame.create ({
             name,                          // CREO LO QUE QUIERO PONER EN DB
              description,
@@ -100,7 +103,7 @@ router.post("/Videogame", async (req,res)=> {
     let genreDb= await Genre.findAll({
         where: { name: genres }         // BUSCO EN TODAS LAS DIETAS 
     })
-    videogamesCreated.addGenre(genreDb)   // AGREGO LA RECETA A MI BASE DE DIETAS
+    videogamesCreated.addGenre(genreDb)  // AGREGO LA RECETA A MI BASE DE DIETAS
     res.send("Tu videojuego fue creado con exito")
 })
 
@@ -120,12 +123,12 @@ router.get("/Videogames/:id", async (req,res) => {
                 released: juegos.released,
                 image: juegos.background_image,
                 platforms: juegos.platforms.map(e => e.platform.name + " / "),
-                description: juegos.description,
+                description: juegos.description_raw,
                 rating: juegos.rating,
                 genres : juegos.genres.map(genre => genre.name + "  ")
             }
+            res.send(juegos)
         }
-        res.send(juegos)
         }catch(error){
             next(error)
     }
